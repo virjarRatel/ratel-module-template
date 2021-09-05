@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+
+
+    defaultConfig {
+        applicationId "com.virjar.ratel.demoapp.crack"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+
+    }
+
+    signingConfigs {
+        release {
+            storeFile rootProject.file('script/hermes_key')
+            storePassword "hermes"
+            keyAlias "hermes"
+            keyPassword "hermes"
+        }
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        //debug ,也使用release的key，hermes代码无法在线调试，所以没有debug的意义
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/io.netty.versions.properties'
+    }
+
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    // ratel核心api
+    compileOnly 'com.virjar:ratel-api:1.3.6'
+    // ratel的扩展api，他一般是给逆向破解和爬虫业务使用，如果您只是基于ratel做一个插件，那么大多数情况不需要依赖他
+    api 'com.virjar:ratel-extersion:1.0.6'
+    // sekiro项目，他可以提供长链接RPC功能
+    api 'com.virjar:sekiro-api:1.0.3'
+    // 使用sekiro新版本驱动的长链接调试框架（低版本的驱动在ratel-extersion中被提供），
+    // 请注意在未来sekiro将会会完全废弃老版本的sekiro，之后只用使用下面的依赖
+    // 另外如果你目前使用的是新版本的sekiro，也只能应用下面的依赖使用sekiro
+    // api 'com.virjar.sekiro.business:sekiro-ratel:1.1'
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
+}

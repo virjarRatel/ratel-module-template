@@ -1,0 +1,58 @@
+import java.nio.charset.StandardCharsets
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+
+    repositories {
+        repositories {
+            maven {
+                name "aliyunmaven"
+                url "https://maven.aliyun.com/repository/public"
+            }
+            maven {
+                name "aliyunGoogle"
+                url "https://maven.aliyun.com/repository/google"
+            }
+
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'net.sf.proguard:proguard-gradle:6.1.1'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+
+    tasks.withType(JavaCompile) {
+        // 在windows上面，可能会用gbk编译项目。导致乱码
+        options.encoding(StandardCharsets.UTF_8.name())
+    }
+
+    repositories {
+        repositories {
+            maven {
+                name "aliyunmaven"
+                url "https://maven.aliyun.com/repository/public"
+            }
+            maven {
+                name "aliyunGoogle"
+                url "https://maven.aliyun.com/repository/google"
+            }
+
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    ratelEngineVersionCode = 5
+    ratelEngineVersion = "1.2.2"
+}
